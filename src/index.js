@@ -25,18 +25,30 @@ module.exports = function toReadable (number) {
     'eight',
     'nine',
     'ten',
+]
+
+    let tens = [
     'eleven',
-    'twelwe',
+    'twelve',
     'thirteen',
     'fourteen',
     'fifteen',
     'sixteen',
     'seventeen',
     'eighteen',
-  ]
+    'nineteen',
+    ]
 
-if (number < 20) {
+if (number == '0') {
+    return 'zero'
+}
+
+if (number <= 10) {
     return unit[number - 1]
+}
+
+if (number > 10 && number < 20) {
+    return tens[number - 11]
 }
 
 if (number >= 20 && number < 100 && number % 10 == 0) {
@@ -47,16 +59,23 @@ if (number >= 20 && number < 100 && number % 10 != 0) {
     return decade[Math.floor(number / 10) - 1] + ' ' + unit[number.at(-1) - 1]
 }
 
-/* Не рабочая часть, слишком много переменных для точного результат */
-/*if (number >= 100 && number <= 1000 && number % 100 == 0) {
-    return unit[(number / 100) - 1] + ' ' + 'hundred'
-}
-if (number >= 100 & number <= 500 && number % 100 != 0) {
-    return unit[Math.floor(number / 100) - 1] + ' ' + 'hundred' + ' ' + decade[Math.floor(number / 100 - 1)] + ' ' + unit[Math.floor(number.at(-1) - 1)];
-} */
-
-if (number.length == 3 && number.at(-1) != '0') {
+if (number.length == 3 && number.at(-1) != '0' && number.at(1) != '0' && number.at(1) != '1') {
     return unit[index[0] - 1] + ' ' + 'hundred' + ' ' + decade[index[1] - 1] + ' ' + unit[index[2] - 1]
   }
 
+  if (number.length == 3  &&  number.at(-1) == '0'  &&  number.at(1) != '0') {
+    return unit[index[0] - 1] + ' ' + 'hundred' + ' ' + decade[index[1] - 1]
+  }
+
+  if (number.length == 3  &&  number.at(-1) == '0'  &&  number.at(1) == '0') {
+    return unit[index[0] - 1] + ' ' + 'hundred'
+  }
+
+  if (number.length == 3  &&  number.at(1) == '0') {
+    return unit[index[0] - 1] + ' ' + 'hundred' + ' ' + unit[index[2] - 1]
+  }
+
+  if (number.length == 3  &&  number.at(-1) != '0'  &&  number.at(1) == '1') {
+    return unit[index[0] - 1] + ' ' + 'hundred' + ' ' + tens[index[2] - 1]
+  }
 }
